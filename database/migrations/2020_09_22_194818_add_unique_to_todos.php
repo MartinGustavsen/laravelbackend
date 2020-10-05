@@ -14,7 +14,7 @@ class AddUniqueToTodos extends Migration
     public function up()
     {
         Schema::table('todos', function (Blueprint $table) {
-            $table->unique(["name", "todo_lists_id"], 'name_todo_lists_unique');
+            $table->unique(["name", "todo_list_id"], 'name_todo_lists_unique');
         });
     }
 

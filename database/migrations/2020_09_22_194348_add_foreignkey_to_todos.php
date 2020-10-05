@@ -15,7 +15,7 @@ class AddForeignkeyToTodos extends Migration
     {
         Schema::table('todos', function (Blueprint $table) {
             //
-            $table->foreignId('todo_lists_id')->constrained('todo_lists')->cascadeOnDelete();
+            $table->foreignId('todo_list_id')->constrained('todo_lists')->cascadeOnDelete();
         });
     }
 

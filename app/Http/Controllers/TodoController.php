@@ -13,7 +13,7 @@ class TodoController extends Controller
 
         $todo = ToDo::findOrFail($id);
         $user = Auth::user();
-        $todolist = TodoList::find('id',$todo->todo_lists_id);
+        $todolist = TodoList::find('id',$todo->todo_list_id);
 
         return $todolist  && $user->id==$todolist->user_id;
     }
@@ -28,7 +28,7 @@ class TodoController extends Controller
         if($todolist && $user->id==$todolist->user_id){
             $todo = new Todo();
             $todo->name=request('name');
-            $todo->todo_lists_id=$todo_list_id;
+            $todo->todo_list_id=$todo_list_id;
             $todo->is_finished=false;
             $todo->save();
             return response()->json($todo,201);
@@ -38,7 +38,7 @@ class TodoController extends Controller
         }
     }
     public function index($list_id){
-        return response()->json(Todo::where('todo_lists_id',$list_id)->get());
+        return response()->json(Todo::where('todo_list_id',$list_id)->get());
     }
     public function show($id){
         return response()->json(Todo::findOrFail($id));

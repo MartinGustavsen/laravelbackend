@@ -27,7 +27,7 @@ Route::post('login',[AuthController::class,'login']);
 Route::middleware('auth:api')->group(function() {
 
     Route::post('todos',[TodoController::class,'store']);
-    Route::get('todos/{id}',[TodoController::class,'show']);
+    // Route::get('todos/{id}',[TodoController::class,'show']);
     Route::put('todos',[TodoController::class,'update']);
     Route::delete('todos/{id}',[TodoController::class,'destroy']);
 

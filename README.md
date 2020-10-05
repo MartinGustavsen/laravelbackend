@@ -1,3 +1,31 @@
+## Create folders
+
+```
+#!terminal
+
+cp .env.example .env && mkdir bootstrap/cache storage storage/framework && cd storage/framework && mkdir sessions views cache
+
+```
+
+## Folder permissions
+
+```
+#!terminal
+
+sudo chown :www-data app storage bootstrap -R
+sudo chmod 775 app storage bootstrap -R
+
+```
+
+## Install dependencies
+
+```
+#!terminal
+
+composer install
+
+```
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">

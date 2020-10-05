@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TodoList;
+use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,16 +24,30 @@ class TodoListController extends Controller
         $todolist->name=request('name');
         $todolist->user_id=$user->id;
         $todolist->save();
+
+        foreach (request('todos') as $todo_request) {
+            if($todolist){
+                $todo = new Todo();
+                $todo->name=$todo_request['name'];
+                $todo->todo_list_id=$todolist->id;
+                $todo->is_finished=false;
+                $todo->save();
+            }
+        }
+        
         return response()->json($todolist,201);
     }
     public function index(){
-
         $user = Auth::user();
-        return response()->json(TodoList::where('user_id', $user->id)->get());
+
+        $data = TodoList::where('user_id', $user->id)->get();
+        return response()->json(TodoList::with('todos')->get());
+        // return response()->json(TodoList::where('user_id', $user->id)->get());
     }
     public function show($id){
         if($this->is_user_allowed($id)){
-            return response()->json(TodoList::findOrFail($id));
+            $data = TodoList::findOrFail($id);
+            return response()->json( $data->loadMissing('todos'));
         }
         else{
             return response()->json('Invalid User',401);
@@ -45,6 +60,20 @@ class TodoListController extends Controller
             $todolist = TodoList::findOrFail($id);
             $todolist->name=request('name');
             $todolist->save();
+
+            foreach (request('todos') as $todo_request) {
+                if($todolist){
+                    $todo = Todo::find($todo_request['id']);
+                    if($todo==null){
+                        $todo = new Todo();
+                        $todo->todo_list_id=$todolist->id;
+                    }
+                    $todo->name=$todo_request['name'];
+                    $todo->is_finished=$todo_request['is_finished'];
+                    $todo->save();
+                }
+            }
+
             return response()->json($todolist);
         }
         else{
